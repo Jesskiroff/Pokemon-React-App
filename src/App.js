@@ -9,8 +9,7 @@ function App() {
     let fetchPokemon = async () => {
       try {
         const { data } = await axios.get('https://pokeapi.co/api/v2/pokemon');
-        setPokemen(data.results)
-        console.log(pokemen);
+        setPokemen(data.results);
       } catch (err) {
         console.log('Error: ', err);
       }
@@ -22,8 +21,16 @@ function App() {
   return (
     <>
       <button>Load More Pokemon</button>
-      <div>{/* iterate through pokemon array here*/}</div>
-      {/*use this for routing and diff component 4 all pokemon*/}
+      <div>
+        {pokemen.map((pokemon) => {
+          return (
+            <div key={pokemon.name}>
+              <h3>Name: {pokemon.name}</h3>
+              <p>{pokemon.url}</p>
+            </div>
+          );
+        })}
+      </div>
     </>
   );
 }
