@@ -3,18 +3,21 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function App() {
-  const { pokemon, setPokemon } = useState([]);
+  const { pokemen, setPokemen } = useState([]);
 
   useEffect(() => {
-    let fetchPokemon = () => {
+    let fetchPokemon = async () => {
       try {
-        const { data } = axios.get('https://pokeapi.co/api/v2/pokemon');
+        const { data } = await axios.get('https://pokeapi.co/api/v2/pokemon');
+        setPokemen(data.results)
+        console.log(pokemen);
       } catch (err) {
         console.log('Error: ', err);
       }
     };
-  });
 
+    fetchPokemon();
+  }, []);
 
   return (
     <>
