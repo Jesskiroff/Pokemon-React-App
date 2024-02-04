@@ -18,9 +18,21 @@ function App() {
     fetchPokemon();
   }, []);
 
+  let loadMorePokemon = async () => {
+    try {
+      let { data } = await axios.get(
+        'https://pokeapi.co/api/v2/pokemon?offset=20&limit=20'
+      );
+      console.log(data);
+      console.log('new list of pokemn', [...pokemen, ...data.results]);
+    } catch (err) {
+      console.log('Error loading more pokemon,', err);
+    }
+  };
+
   return (
     <>
-      <button>Load More Pokemon</button>
+      <button onClick={() => loadMorePokemon}>Load More Pokemon</button>
       <div>
         {pokemen.map((pokemon) => {
           return (
