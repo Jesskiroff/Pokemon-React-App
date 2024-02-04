@@ -3,15 +3,17 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function App() {
-  const { pokemen, setPokemen } = useState([]);
+  const [pokemen, setPokemen] = useState([]);
+  const [nextPage, setNextPage] = useState(null);
 
   useEffect(() => {
     let fetchPokemon = async () => {
       try {
         const { data } = await axios.get('https://pokeapi.co/api/v2/pokemon');
         setPokemen(data.results);
+        setNextPage(data.next);
       } catch (err) {
-        console.log('Error: ', err);
+        console.log('Error loading initial pokemon: ', err);
       }
     };
 
@@ -20,11 +22,9 @@ function App() {
 
   let loadMorePokemon = async () => {
     try {
-      let { data } = await axios.get(
-        'https://pokeapi.co/api/v2/pokemon?offset=20&limit=20'
-      );
-      console.log(data);
-      console.log('new list of pokemn', [...pokemen, ...data.results]);
+      let { data } = await axios.get(nextPage);
+      setPokemen((prevList) => [...prevList, ...data.results]);
+      setNextPage(data.next);
     } catch (err) {
       console.log('Error loading more pokemon,', err);
     }
